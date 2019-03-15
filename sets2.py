@@ -125,18 +125,9 @@ class Field:
         self.shp[a * b] -= 1
 
     def field_with_ships(self, i, end="             "):
-        if i < 0:
-            return "   |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|".format("a",
-                                                                                             "b",
-                                                                                             "c",
-                                                                                             "d",
-                                                                                             "e",
-                                                                                             "f",
-                                                                                             "g",
-                                                                                             "h",
-                                                                                             "i",
-                                                                                             "j") \
-                   + end
+        if i in [-1, 10]:
+            return "   |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|    ".format(
+                "a", "b", "c", "d", "e", "f", "g", "h", "i", "j") + end
         # for i in range(len(self._ships)):
         res = "{:>2} ".format(i + 1)
         for j in range(len(self._ships[i])):
@@ -147,22 +138,13 @@ class Field:
             else:
                 tmp = self._ships[i][j]
                 res += "| " + "{:^1}".format(self._ships[i][j]) + " "
-        res += "|" + end
+        res += "| " + "{:<2} ".format(i + 1) + end
         return res
 
     def field_without_ships(self, i, end="\n"):
-        if i < 0:
-            return "   |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|".format("a",
-                                                                                             "b",
-                                                                                             "c",
-                                                                                             "d",
-                                                                                             "e",
-                                                                                             "f",
-                                                                                             "g",
-                                                                                             "h",
-                                                                                             "i",
-                                                                                             "j") \
-                   + end
+        if i in [-1, 10]:
+            return "   |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|    ".format(
+                "a", "b", "c", "d", "e", "f", "g", "h", "i", "j") + end
         # for i in range(len(self._ships)):
         res = "{:>2} ".format(i + 1)
         for j in range(len(self._ships[i])):
@@ -176,7 +158,7 @@ class Field:
             else:
                 tmp = self._ships[i][j]
                 res += "| " + "{:^1}".format(self._ships[i][j]) + " "
-        res += "|" + end
+        res += "| " + "{:<2} ".format(i + 1) + end
         return res
 
 
@@ -197,11 +179,11 @@ class Player:
 
     def read_shot_position(self):
         ans = input("\nWhere to shoot (a8 for example) --> ")
-        ans = ans[::-1] if ans[0] in "0123456789" else ans
+        ans = ans[-1] + ans[:-1] if ans[0] in "0123456789" else ans
         while ans in self.hited or int(ans[1:]) not in range(1, 11) or ans[0] \
                 not in "abcdefghij" or ans == "":
             ans = input("Where to shoot (a8 for example) --> ")
-            ans = ans[::-1] if ans[0] in "0123456789" else ans
+            ans = ans[-1] + ans[:-1] if ans[0] in "0123456789" else ans
         self.hited.append(ans)
         pos = int(ans[1:]) - 1, ord(ans[0].lower()) - 97
         flag = self.shoot_at(pos)
@@ -226,10 +208,12 @@ class PC(Player):
     to_think = False
 
     def __init__(self, field, name="PC"):
+        global to_remove
+        to_remove = []
         super().__init__(name)
-
         self.field = field
         self.to_hit = [(i, j) for i in range(10) for j in range(10)]
+        self.update_restore(to_remove)
 
     def update_restore(self, to_remove):
         for elem in to_remove:
@@ -252,6 +236,8 @@ class PC(Player):
         try:
             self.to_hit.remove(pos)
             flag = self.shoot_at(pos)
+            if len(self.base_pos) != 0:
+                self.position_moves[self.base_pos].append(flag)
             # print("Normal shoot at {} with {}".format(pos, flag))
         except Exception:
             self.position_moves[self.base_pos].append(False)
@@ -275,6 +261,7 @@ class PC(Player):
             return flag, self.name + "`s move: " + tmp
 
     def think(self):
+        # print(self.position_moves)
         if self.cur_pos in ((), -1):
             self.cur_pos = self.bt_pos[:]
         # else:
@@ -283,16 +270,21 @@ class PC(Player):
         avail = [elem for elem in self.position_moves if self.position_moves[elem] == []]
         while self.cur_pos not in self.to_hit:
             # print("why are you changing?")
-            self.base_pos = ()
             if len(avail) == 0:
                 self.cur_pos = ()
                 self.base_pos = ()
                 self.to_think = False
                 return -1
-            self.cur_pos = self.bt_pos[:]
-            self.base_pos = random.choice(avail)
-            avail.remove(self.base_pos)
+            if self.base_pos != () and (self.position_moves[self.base_pos] != []
+                                        and self.position_moves[self.base_pos][-1]):
+                self.position_moves[self.base_pos].append(False)
+            else:
+                self.base_pos = ()
+                self.cur_pos = self.bt_pos[:]
+                self.base_pos = random.choice(avail)
+                avail.remove(self.base_pos)
             self.cur_pos = (self.base_pos[0] + self.cur_pos[0], self.base_pos[1] + self.cur_pos[1])
+        # print(self.position_moves)
         self.prnt_pos.append(self.cur_pos)
         self.to_hit.remove(self.cur_pos)
         hit = self.field.shoot_at(self.cur_pos)

@@ -226,11 +226,37 @@ class PC(Player):
         self.position_moves = {(1, 0): [], (-1, 0): [], (0, 1): [], (0, -1): []}
         self.to_think = False
 
+    def check_available_position(self, pos, length):
+        for j in range(1, length):
+            if (pos[0] + j, pos[1]) in self.to_hit or (pos[0] - j, pos[1]) in self.to_hit or (
+                    pos[0], pos[1] + j) in self.to_hit or (pos[0], pos[1] - j) in self.to_hit:
+                return True
+        return False
+
     def read_shot_position(self):
         self.prnt_pos = []
         if self.cur_pos == ():
-            pos = random.choice(self.to_hit)
-            self.bt_pos = pos[:]
+            while True:
+                pos = random.choice(self.to_hit)
+                self.bt_pos = pos[:]
+                if self.field.shp[1] == 0:
+                    if self.field.shp[2] != 0:
+                        if self.check_available_position(pos, 2):
+                            break
+                        else:
+                            self.to_hit.remove(pos)
+                    elif self.field.shp[3] != 0:
+                        if self.check_available_position(pos, 3):
+                            break
+                        else:
+                            self.to_hit.remove(pos)
+                    elif self.field.shp[4] != 0:
+                        if self.check_available_position(pos, 4):
+                            break
+                        else:
+                            self.to_hit.remove(pos)
+                else:
+                    break
         else:
             pos = self.cur_pos
         try:
@@ -241,7 +267,7 @@ class PC(Player):
             # print("Normal shoot at {} with {}".format(pos, flag))
         except Exception:
             self.position_moves[self.base_pos].append(False)
-            flag = self.think()
+            flag = self.search_injured()
             pos = self.cur_pos
             self.to_think = False
         global to_remove
@@ -253,14 +279,14 @@ class PC(Player):
             self.update_restore(to_remove)
             self.to_think = False
         if self.to_think:
-            flag = self.think()
+            flag = self.search_injured()
         tmp = " ".join(chr(elem[1] + 97) + str(elem[0] + 1) for elem in self.prnt_pos)
         try:
             return flag, self.name + "`s move: " + chr(pos[1] + 97) + str(pos[0] + 1) + " " + tmp
         except Exception:
             return flag, self.name + "`s move: " + tmp
 
-    def think(self):
+    def search_injured(self):
         # print(self.position_moves)
         if self.cur_pos in ((), -1):
             self.cur_pos = self.bt_pos[:]
