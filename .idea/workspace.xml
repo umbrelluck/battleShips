@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6667b723-b4c9-4415-8e83-1ddb9423ecce" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/sets.py" beforeDir="false" afterPath="$PROJECT_DIR$/sets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sets2.py" beforeDir="false" afterPath="$PROJECT_DIR$/sets2.py" afterDir="false" />
-    </list>
+    <list default="true" id="6667b723-b4c9-4415-8e83-1ddb9423ecce" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +23,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1087">
+            <state relative-caret-position="1173">
               <caret line="264" column="37" selection-start-line="264" selection-start-column="37" selection-end-line="264" selection-end-column="37" />
               <folding>
                 <element signature="e#993#6019#0" />
@@ -114,6 +111,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -130,7 +128,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -301,11 +298,12 @@
       <workItem from="1552390118457" duration="51000" />
       <workItem from="1552580243295" duration="1949000" />
       <workItem from="1552633623146" duration="1500000" />
+      <workItem from="1552644625887" duration="604000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="128140000" />
+    <option name="totallyTimeSpent" value="128744000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -318,8 +316,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="26" width="1366" height="742" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4" visible="true" weight="0.23564954" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4" visible="true" weight="0.23867069" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.6" side_tool="true" weight="0.260574" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -450,7 +449,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sets.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1087">
+        <state relative-caret-position="1173">
           <caret line="264" column="37" selection-start-line="264" selection-start-column="37" selection-end-line="264" selection-end-column="37" />
           <folding>
             <element signature="e#993#6019#0" />

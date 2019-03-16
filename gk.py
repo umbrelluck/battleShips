@@ -1,3 +1,6 @@
+"""
+for debugging
+"""
 import time, sets, sys, random
 
 info = [1, 2, 3]
